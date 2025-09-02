@@ -78,7 +78,7 @@ void mic_i2s_init() {
     //.mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM),
     .sample_rate = SAMPLE_RATE ,
     .bits_per_sample = i2s_bits_per_sample_t(SAMPLE_BITS),
-    .channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT, // Mono audio
+    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT, // Mono audio
     //CAMERA_MODEL_XIAO_ESP32S3
     //.channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
     .communication_format = I2S_COMM_FORMAT_STAND_I2S,
