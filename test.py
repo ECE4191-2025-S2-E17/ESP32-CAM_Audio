@@ -1,19 +1,20 @@
 import requests
 import wave
 import sys
+import numpy as np
 
 # --- Configuration ---
 # Replace with the actual URL of the continuous WAV audio stream
-STREAM_URL = "http://10.92.204.98:82/audio"
+STREAM_URL = "http://192.168.5.98:82/audio"
 
 # Input stream parameters (fixed based on your description)
 INPUT_BIT_DEPTH = 32
-INPUT_CHANNELS = 2  # Assuming stereo based on standard practice
+INPUT_CHANNELS = 1
 
 # Output WAV file parameters
 OUTPUT_BIT_DEPTH = 24
 OUTPUT_CHANNELS = INPUT_CHANNELS
-SAMPLE_RATE = 22050 
+SAMPLE_RATE = 22050
 
 # Duration to capture in seconds
 CAPTURE_DURATION_SECONDS = 10
@@ -22,10 +23,13 @@ CAPTURE_DURATION_SECONDS = 10
 # Formula: (sample rate * channels * bit depth / 8) * duration
 BYTES_PER_SECOND_OUTPUT = SAMPLE_RATE * OUTPUT_CHANNELS * (OUTPUT_BIT_DEPTH / 8)
 TOTAL_BYTES_TO_CAPTURE_OUTPUT = int(BYTES_PER_SECOND_OUTPUT * CAPTURE_DURATION_SECONDS)
+print(BYTES_PER_SECOND_OUTPUT, TOTAL_BYTES_TO_CAPTURE_OUTPUT)
+
+buffer = bytearray()
 
 # --- Script Logic ---
 print(f"Attempting to connect to the 32-bit big-endian stream at: {STREAM_URL}")
-print(f"Capturing {CAPTURE_DURATION_SECONDS} seconds and converting to 24-bit...")
+print(f"Capturing {CAPTURE_DURATION_SECONDS} seconds and converting to 16-bit...")
 
 try:
     # Use requests.get with stream=True for continuous streams

@@ -18,7 +18,7 @@
 //#define I2S_PORT          I2S_NUM_0
 
 //---- Sampling ------------
-#define SAMPLE_RATE       22050 // Sample rate of the audio 
+#define SAMPLE_RATE       32000 // Sample rate of the audio 
 #define SAMPLE_BITS       32   // Bits per sample of the audio
 //CAMERA_MODEL_XIAO_ESP32S3
 //#define SAMPLE_BITS       16
@@ -129,7 +129,6 @@ void handleAudioStream() {
     }
     // Read audio data from I2S DMA
     i2s_read(I2S_PORT, buffer, bufferSize, &bytesRead, portMAX_DELAY);
-
     // Send audio data
     if (bytesRead > 0) {
       Audioclient.write(buffer, bytesRead);

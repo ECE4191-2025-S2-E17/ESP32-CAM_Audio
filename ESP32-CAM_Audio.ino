@@ -1,6 +1,7 @@
 #include "esp_camera.h"
 #include <WiFi.h>
 #include "audio_server.h"
+#include "motor_driver.h"
 
 //
 // WARNING!!! PSRAM IC required for UXGA resolution and high JPEG quality
@@ -36,8 +37,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "BFF";
-const char* password = "2htpknrg8ud9";
+const char* ssid = "";
+const char* password = "";
 
 void startCameraServer();
 void setupLedFlash(int pin);
@@ -161,6 +162,7 @@ void loop() {
 
   Audioserver.handleClient();
   VideoAudioserver.handleClient();
+  MotorServer.handleClient();
   // Do nothing. Everything is done in another task by the web server
   //delay(10000);
 }
