@@ -1,6 +1,6 @@
+#include <HardwareSerial.h>
 #include <WebServer.h>
 #include <WebSocketsServer.h>
-#include <HardwareSerial.h>
 
 #define RX_PIN 16
 #define TX_PIN 4
@@ -33,7 +33,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
         IPAddress ip = webSocket.remoteIP(num);
         Serial.printf("[%u] Connected from %d.%d.%d.%d\n", num, ip[0], ip[1], ip[2], ip[3]);
         // Send connection confirmation
-        webSocket.sendTXT(num, "Connected to ESP32 Motor Controller");
+        webSocket.sendTXT(num, "INFO: Connected to ESP32 Motor Controller");
         break;
     }
 
@@ -46,7 +46,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
         Serial2.flush();
 
         // Send acknowledgment to client
-        webSocket.sendTXT(num, "Command sent: " + command);
+        webSocket.sendTXT(num, "INFO: Command sent: " + command);
         break;
 
     default:
@@ -77,7 +77,7 @@ void checkSTM32Messages() {
         // Broadcast STM32 response to all connected WebSocket clients
         if (message.length() > 0) {
             Serial.println("STM32 Response: " + message);
-            webSocket.broadcastTXT("STM32: " + message);
+            webSocket.broadcastTXT(message);
         }
     }
 }
