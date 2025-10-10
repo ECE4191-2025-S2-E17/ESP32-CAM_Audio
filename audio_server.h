@@ -5,7 +5,7 @@
 //---- I2S Configuration ------------
 
 // I2S pins
-#define I2S_WS 2
+#define I2S_WS 13
 #define I2S_SCK 14
 #define I2S_SD 15
 // CAMERA_MODEL_XIAO_ESP32S3

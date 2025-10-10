@@ -37,8 +37,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char *ssid = "";
-const char *password = "";
+const char *ssid = "MoyuLaptop";
+const char *password = "qwerty123";
 
 void startCameraServer();
 void setupLedFlash(int pin);
@@ -151,7 +151,7 @@ void setup() {
 
     audio_http_stream();
 
-    // VideoAudio_http();
+    VideoAudio_http();
 
     motor_websocket_server();
 
