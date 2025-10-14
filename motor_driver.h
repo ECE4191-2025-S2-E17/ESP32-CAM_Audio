@@ -13,7 +13,6 @@ void setupSerial() {
     while (!Serial) {
         ; // wait for serial port to connect. Needed for native USB
     }
-
 }
 
 //---- WebSocket Event Handler ------------
@@ -52,33 +51,27 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
 }
 
 //---- STM32 Response Handler ------------
-
 void checkSTM32Messages() {
-    // Check for incoming messages from STM32
-    if (Serial.available()) {
-        String message = "";
+    static char message_buf[128];
+    static uint8_t message_pos = 0;
 
-        // Read complete line from STM32
-        while (Serial.available()) {
-            char c = Serial.read();
-            if (c == '\n' || c == '\r') {
-                if (message.length() > 0) {
-                    break;
+    while (Serial.available()) {
+        char in_char = Serial.read();
+
+        if (in_char == '\n' || in_char == '\r') { // End of line detected
+            if (message_pos > 0) {
+                message_buf[message_pos] = '\0'; // Null-terminate the string
+                String message_str = String(message_buf);
+
+                if (message_str.startsWith("HEARTBEAT")) {
+                    webSocket.broadcastTXT(message_str + String(WiFi.RSSI()));
+                } else {
+                    webSocket.broadcastTXT(message_str);
                 }
-            } else {
-                message += c;
+                message_pos = 0; // Reset for the next message
             }
-            delay(1);
-        }
-
-        // Broadcast STM32 response to all connected WebSocket clients
-        if (message.length() > 0) {
-            // Serial.println("STM32 Response: " + message);
-            if (message.startsWith("HEARTBEAT")){
-                webSocket.broadcastTXT(message + String(WiFi.RSSI()));
-            } else {
-                webSocket.broadcastTXT(message);
-            }
+        } else if (message_pos < sizeof(message_buf) - 1) {
+            message_buf[message_pos++] = in_char;
         }
     }
 }
