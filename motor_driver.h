@@ -79,13 +79,11 @@ void checkSTM32Messages() {
 void motor_websocket_server() {
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
-    MotorServer.begin();
     Serial.println("Motor WebSocket server started on port 85");
     Serial.println("WebSocket URL: ws://[ESP32_IP]:85");
 }
 
 void motor_server_handle_client() {
     webSocket.loop();           // Handle WebSocket events
-    MotorServer.handleClient(); // Handle HTTP requests
     checkSTM32Messages();       // Check for STM32 responses
 }
