@@ -151,6 +151,8 @@ void setup() {
 
     audio_http_stream();
 
+    VideoAudio_http();
+
     motor_websocket_server();
 
     Serial.print("Camera Ready! Use 'http://");
@@ -161,5 +163,8 @@ void setup() {
 void loop() {
 
     Audioserver.handleClient();
+    VideoAudioserver.handleClient();
     motor_server_handle_client();
+    // Do nothing. Everything is done in another task by the web server
+    // delay(10000);
 }

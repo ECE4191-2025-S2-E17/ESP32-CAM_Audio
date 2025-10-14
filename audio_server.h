@@ -27,6 +27,7 @@
 #define DMA_BUF_LEN 1024
 
 WebServer Audioserver(82);
+WebServer VideoAudioserver(83);
 
 //---- Audio WAV configuration ------------
 
@@ -139,4 +140,40 @@ void audio_http_stream() {
 
     Audioserver.on("/audio", HTTP_GET, handleAudioStream);
     Audioserver.begin();
+}
+
+void handleVideAudio() {
+
+    String ip = WiFi.localIP().toString();
+
+    String content = "<!DOCTYPE html><html lang=\"en\">";
+    content += "<head><meta charset=\"UTF-8\">";
+    content += "<title>ESP32-CAM + Livestream Audio</title>";
+    content += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+    content += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">";
+    content += "<style>";
+    content += "body { background-color: #FFF; }";
+    content += ".container1 { display: flex; flex-direction: row; justify-content: center; align-items: center; height: 100%; }";
+    content += ".container2 { display: flex; flex-direction: row; justify-content: center; align-items: center; height: 100%; }";
+    content += ".block { width: 200px; height: 200px; background-color: gray; margin: 10px; display: flex; justify-content: center; align-items: center; }";
+    content += "#video { border: 0; }";
+    content += "#audio { border: 0; }";
+    content += "#tbl { background-color: #000; }";
+    content += "</style></head><body>";
+    content += "<h1>ESP32-CAM + Livestream Audio</h1>";
+    content += "<div class=\"container1\" style=\"overflow-x:auto;\">";
+    content += "<table id=\"tbl\" style=\"overflow-x:auto;\"><tr>";
+    content += "<td><iframe id=\"video\" src=\"http://" + ip + ":81/stream\" allow=\"camera\" width=\"640\" height=\"480\"></iframe></td>";
+    content += "</tr><tr>";
+    content += "<td><video controls autoplay width=\"640\" height=\"60\" id=\"audio\"><source src=\"http://" + ip + ":82/audio\" type=\"audio/wav\"></video></td>";
+    content += "</tr></table></div>";
+    content += "</body></html>";
+
+    VideoAudioserver.send(200, "text/html", content);
+}
+
+void VideoAudio_http() {
+
+    VideoAudioserver.on("/", HTTP_GET, handleVideAudio);
+    VideoAudioserver.begin();
 }
