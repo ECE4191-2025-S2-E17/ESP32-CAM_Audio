@@ -44,7 +44,6 @@ void startCameraServer();
 void setupLedFlash(int pin);
 
 void audio_http_stream();
-void VideoAudio_http();
 
 void setup() {
     Serial.begin(115200);
